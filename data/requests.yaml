@@ -1,0 +1,31 @@
+REQUESTS_DESCRIPTION :
+  
+  API_1 :
+    TYPE : POST
+    ENDPOINT : /api?service=security&action=login
+    HEADERS :
+      Content-Type : application/json
+    BODY :
+      ent_id: be81ef70-961b-11e8-b25e-04013d24cd02
+      password: tanay@123
+      remember_me: true
+      service: wf
+      user_name: tanay@ingrainhub.com
+
+  API_2 :
+    TYPE : POST
+    ENDPOINT : /api?service=flow&action=ent&version=2
+    HEADERS :
+      Content-Type : application/json
+    BODY :
+      name: _kumarb
+
+  API_3 :
+    TYPE : POST
+    ENDPOINT : /api?service=flow&action=get_all_segments
+    HEADERS :
+      Content-Type : application/json
+    BODY :
+      ent_id: 0e12a9f0-c1be-11e6-b9ea-04013d24cf02
+      user_id: 951417e0-640b-11e8-98ef-04013d24cf02
+      widget_type: sh
