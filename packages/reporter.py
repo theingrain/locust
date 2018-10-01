@@ -7,6 +7,7 @@ import shutil
 import datetime
 import fileinput
 import pandas as pd
+from yattag import Doc
 import plotly.graph_objs as go
 import plotly.figure_factory as FF
 
@@ -141,10 +142,10 @@ class ReportGenerator :
 		shutil.copy(os.path.join('reports','templates','dashboard_template.html'),
 			os.path.join('reports','dashboard_summary.html'))
 		update_data = div_for_throughput + '\n' + div_for_throughput_graph + '\n' + div_for_distribution + '\n' + div_for_distribution_graph
-		with open('reports//dashboard_summary.html', 'r') as file :
+		with open(os.path.join('reports','dashboard_summary.html'), 'r') as file :
 			filedata = file.read()
 		filedata = filedata.replace('{{div_data}}', update_data)
-		with open('reports//dashboard_summary.html', 'w') as file:
+		with open(os.path.join('reports','dashboard_summary.html'), 'w') as file:
 			file.write(filedata)
 		self.manipulate_html_dashboard()
 
@@ -164,3 +165,93 @@ class ReportGenerator :
 		filedata = filedata.replace('"showLink": true', '"showLink": false')
 		with open(os.path.join('reports','dashboard_summary.html'), 'w') as file:
 			file.write(filedata)
+
+	def get_email_template_src(self):
+		doc, tag, text = Doc().tagtext()
+		doc.asis('<!DOCTYPE html>')
+		with tag('html'):
+			with tag('head'):
+				with tag('title'):
+					text('Summary Report')
+				doc.asis('<meta charset="utf-8" />')
+			with tag('body'):
+				with tag('h4'):
+					text('APIs STATISTICS')
+				with tag('blockquote'):
+					with tag('table', style='font-size: 12px;width: 100%;border-spacing: 2px;border-color:grey'):
+						with tag('thead', style="width: 100%;border-spacing: 2px;border-color:grey"):
+							with tag('tr'):
+								with tag('th', colspan='11', style='font-size: 14px;border: 1px #6ea1cc !important;text-align: center; padding: 8px;background-color: #508abb;color: #fff;'):
+									text('STATISTICS FOR ' + datetime.date.today().strftime('%d, %b %Y'))
+							with tag('tr'):
+								with open('responses_requests.csv') as csv_file:
+									csv_reader = csv.reader(csv_file, delimiter=',')
+									line_count = 0
+									for row in csv_reader:
+										for elements in range(0, len(row)):
+											if elements in [4, 8]:
+												continue
+											with tag('th', style='font-size: 14px;border: 1px #6ea1cc !important;text-align: left; padding: 8px;background-color: #508abb;color: #fff;'):
+												text(row[elements])
+										break
+								with open('responses_distribution.csv') as csv_file:
+									csv_reader = csv.reader(csv_file, delimiter=',')
+									line_count = 0
+									for row in csv_reader:
+										for elements in range(0, len(row)):
+											if elements in [6, 7, 9]:
+												with tag('th', style='font-size: 14px;border: 1px #6ea1cc !important;text-align: left; padding: 8px;background-color: #508abb;color: #fff;'):
+													text(row[elements])
+										break
+						with tag('tbody', style='font-size: 12px;'):
+							with open('responses_requests.csv') as csv_file, open('responses_distribution.csv') as temp_csv_file:
+								csv_reader = csv.reader(csv_file, delimiter=',')
+								temp_csv_reader = list(csv.reader(temp_csv_file, delimiter=','))
+								line_count = 0
+								temp_line_count = 0
+								counter = 0
+								for row in csv_reader:
+									temp_row = temp_csv_reader[counter]
+									counter = counter + 1
+									if line_count == 0 or row[0] == 'None' or temp_line_count == 0 or temp_row[0] == 'Total':
+										line_count = line_count + 1
+										temp_line_count = temp_line_count + 1
+										continue
+									else :
+										with tag('tr', style='width: 100%;border-bottom:1px solid #efefef;border-top:1px solid #ececec;background-color:#f4fbff;'):
+											for elements in range(0, len(row)):
+												if elements in [4, 8]:
+													continue
+												with tag('td', style='border-collapse:collapse;text-align: left; padding: 8px'):
+													text(row[elements])
+											for temp_elements in range(0, len(temp_row)):
+												if temp_elements in [6,7,9]:
+													with tag('td', style='border-collapse:collapse;text-align: left; padding: 8px'):
+														text(temp_row[temp_elements])
+
+						with tag('tfoot'):
+							with open('responses_requests.csv') as csv_file, open('responses_distribution.csv') as temp_csv_file:
+								csv_reader = csv.reader(csv_file, delimiter=',')
+								temp_csv_reader = list(csv.reader(temp_csv_file, delimiter=','))
+								counter = 0
+								for row in csv_reader:
+									temp_row = temp_csv_reader[counter]
+									counter = counter + 1
+									if row[0] == 'None':
+										with tag('tr', style='width: 100%;border-spacing: 2px;background-color:#fcffc9 !important'):
+											for elements in range(0, len(row)):
+												if elements in [4, 8]:
+													continue
+												with tag('td', style='border-collapse:collapse;text-align: left; padding: 8px'):
+													text(row[elements])
+											for temp_elements in range(0, len(temp_row)):
+												if temp_elements in [6,7,9]:
+													with tag('td', style='border-collapse:collapse;text-align: left; padding: 8px'):
+														text(temp_row[temp_elements])
+									else :
+										continue
+		return doc.getvalue()
+
+	def write_email_src_to_file(self, src_script):
+		with open(os.path.join('reports','email_summary.html'), 'w') as file:
+			file.write(src_script)

@@ -13,4 +13,9 @@ def generate_dashboard(jenkins_logs) :
 	div_for_distribution_graph = util.FiguresGenerator().time_graph_for_requests_completion()
 	util.ReportGenerator().create_dashboard(div_for_throughput, div_for_throughput_graph, div_for_distribution, div_for_distribution_graph)
 
+def generate_email_template():
+	email_src = util.ReportGenerator().get_email_template_src()
+	util.ReportGenerator().write_email_src_to_file(email_src)
+
+generate_email_template()
 generate_dashboard(str(sys.argv[1]))
