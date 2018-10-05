@@ -80,7 +80,7 @@ python generate_reports.py $JENKINS_HOME\\jobs\\$JOB_NAME\\builds\\$BUILD_NUMBER
 5. Configure HTML Publisher Plugin with path `reports\\dashboard_summary.html`.
 
 * The following kind of dashboard will be generated :
-![alt text](https://slack-imgs.com/?c=1&url=https%3A%2F%2Fscreenshotscdn.firefoxusercontent.com%2Fimages%2Fd2af51be-ea6d-444f-8c27-a1ca6bbdcdf6.png%3Fembedded%3Dog "Dashboard Summary")
+![alt text](https://screenshots.firefox.com/MrpWMM3LgNL83h9C/null "Dashboard Summary")
 
 * The following kind of emails will be sent :
-![alt text](https://slack-imgs.com/?c=1&url=https%3A%2F%2Fscreenshotscdn.firefoxusercontent.com%2Fimages%2F978da82a-a8d7-4814-84c3-2cf2bb4d8cde.png%3Fembedded%3Dog "Email Summary")
+![alt text](https://screenshots.firefox.com/ZE4HZpyq20eY2hqK/null "Email Summary")
