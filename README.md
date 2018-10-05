@@ -80,7 +80,7 @@ python generate_reports.py $JENKINS_HOME\\jobs\\$JOB_NAME\\builds\\$BUILD_NUMBER
 5. Configure HTML Publisher Plugin with path `reports\\dashboard_summary.html`.
 
 * The following kind of dashboard will be generated :
-![alt text](https://screenshots.firefox.com/MrpWMM3LgNL83h9C/null "Dashboard Summary")
+![alt text](https://serving.photos.photobox.com/028855084250a90797b9f7f406fbc5b06df9d832a3ea10fcdd51441120ca8bb7f222bf6b.jpg "Dashboard Summary")
 
 * The following kind of emails will be sent :
-![alt text](https://screenshots.firefox.com/ZE4HZpyq20eY2hqK/null "Email Summary")
+![alt text](https://serving.photos.photobox.com/02339974093708002c01dfe645aaa357c9c6cdd45bff375066aac1bfa7eedd4ed9c7d7e0.jpg "Email Summary")
